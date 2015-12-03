@@ -1,0 +1,7 @@
+env.sh
+Vagrantfile
+bin/kubectl
+tmp/
+.vagrant/
+
+.*.sw[op]
