@@ -4,7 +4,16 @@
 set -e
 
 
-BASE_DIR="$( dirname "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" )"
+SOURCE="${BASH_SOURCE[0]}"
+# resolve $SOURCE until the file is no longer a symlink
+while [ -h "$SOURCE" ]; do
+    BASE_DIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+    SOURCE="$(readlink "$SOURCE")"
+    # if $SOURCE was a relative symlink, we need to resolve it relative to
+    # the path where the symlink file was located
+    [[ $SOURCE != /* ]] && SOURCE="$BASE_DIR/$SOURCE"
+done
+BASE_DIR="$( dirname "$( cd -P "$( dirname "$SOURCE" )" && pwd )" )"
 
 K8S_VERSION=v1.1.1
 
